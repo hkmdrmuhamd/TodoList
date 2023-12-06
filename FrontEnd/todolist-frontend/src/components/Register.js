@@ -10,10 +10,10 @@ const Register = () => {
     const userRef = useRef();
     const errRef = useRef();
 
-    const [user, setUser] = useState('');
+    const [userName, setUserName] = useState('');
     const [userFocus, setUserFocus] = useState(false);
 
-    const [pwd, setPwd] = useState('');
+    const [password, setPassword] = useState('');
     const [pwdFocus, setPwdFocus] = useState(false);
 
     const [matchPwd, setMatchPwd] = useState('');
@@ -28,27 +28,27 @@ const Register = () => {
     }, [])
 
     useEffect(() => {
-        console.log(pwd);
-        const match = pwd === matchPwd;
+        console.log(password);
+        const match = password === matchPwd;
         setValidMatch(match);
-    }, [pwd, matchPwd])
+    }, [password, matchPwd])
 
     useEffect(() => {
         setErrMsg('');
-    }, [user, pwd, matchPwd])
+    }, [userName, password, matchPwd])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         <Link to='/login'></Link>
 
         try {
-            const response = await axios.post(REGISTER_URL, JSON.stringify({ user, pwd }), {
-                // parantez içindeki user ve pwd back-end'den bu şekilde gelmeli !!! eğer user yerine username ve pwd yerine passwword şeklinde geliyor ise ; ({user:username , pwd: password}) olarak yazarız !!!!!
+            const response = await axios.post(REGISTER_URL, JSON.stringify({ userName, password }), {
+                // parantez içindeki user ve pwd back-end'den bu şekilde gelmeli !!! eğer user yerine username ve pwd yerine password şeklinde geliyor ise ; ({user:username , pwd: password}) olarak yazarız !!!!!
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             });
             console.log(response.data);
-            console.log(response.accessToken);
+            console.log(response.token);
             console.log(JSON.stringify(response));
             setSuccess(true);
         } catch (err) {
@@ -84,13 +84,13 @@ const Register = () => {
                             type='text'
                             ref={userRef}
                             autoComplete='off'
-                            onChange={(e) => setUser(e.target.value)}
+                            onChange={(e) => setUserName(e.target.value)}
                             required
                             aria-describedby='uidnote'
                             onFocus={() => setUserFocus(true)}
                             onBlur={() => setUserFocus(false)}
                         />
-                        <p id='uidnote' className={userFocus && !user ? 'instructions' : 'offscreen'}>
+                        <p id='uidnote' className={userFocus && !userName ? 'instructions' : 'offscreen'}>
                             <FontAwesomeIcon icon={faInfoCircle} />
                             isim alanı boş bırakılamaz
                         </p>
@@ -98,13 +98,13 @@ const Register = () => {
                         <input
                             type='password'
                             id='password'
-                            onChange={(e) => setPwd(e.target.value)}
+                            onChange={(e) => setPassword(e.target.value)}
                             required
                             arial-aria-describedby='pwdnote'
                             onFocus={() => setPwdFocus(true)}
                             onBlur={() => setPwdFocus(false)}
                         />
-                        <p id='pwdnote' className={pwdFocus && !pwd ? 'instructions' : 'offscreen'}>
+                        <p id='pwdnote' className={pwdFocus && !password ? 'instructions' : 'offscreen'}>
                             <FontAwesomeIcon icon={faInfoCircle} />
                             şifre boş bırakılamaz
                         </p>
@@ -131,7 +131,7 @@ const Register = () => {
                             Girdi alanı girilen şifre ile aynı olmak zorunda.
                         </p>
 
-                        <button disabled={!user || !pwd || !validMatch ? true : false}> SignUp </button>
+                        <button disabled={!userName || !password || !validMatch ? true : false}> SignUp </button>
                     </form>
                     <p>
                         Already registered ? <br />

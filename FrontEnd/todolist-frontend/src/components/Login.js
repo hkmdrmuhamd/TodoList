@@ -3,15 +3,15 @@ import AuthContext from "../context/AuthProvider";
 import axios from "../api/axios";
 import { Link, Route } from "react-router-dom";
 import Show from "./Show";
-const LOGIN_URL = '/auth';
+const LOGIN_URL = '/login';
 
 const Login = () => {
     const { setAuth } = useContext(AuthContext);
     const userRef = useRef();
     const errRef = useRef();
 
-    const [user, setUser] = useState('');
-    const [pwd, setPwd] = useState('');
+    const [userName, setUserName] = useState('');
+    const [password, setPassword] = useState('');
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false); // bunun yerine router kullanacağız !! bu şimdilik çalışıp çalışmadığını anlamak için kullandığımız bir yöntem. 
 
@@ -21,14 +21,14 @@ const Login = () => {
 
     useEffect(() => {
         setErrMsg('');
-    }, [user, pwd])
+    }, [user, password])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const response = await axios.post(
                 LOGIN_URL,
-                JSON.stringify({ user, pwd }),
+                JSON.stringify({ userName, password }),
                 {
                     headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
@@ -39,9 +39,9 @@ const Login = () => {
             //console.log(JSON.stringify(response));
             const accessToken = response?.data?.accessToken;
             const roles = response?.data?.roles;
-            setAuth({ user, pwd, roles, accessToken });
-            setUser('');
-            setPwd('');
+            setAuth({ userName, password, roles, accessToken });
+            setUserName('');
+            setPassword('');
             setSuccess(true);
         } catch (err) {
             if (!err?.response) {
@@ -77,7 +77,7 @@ const Login = () => {
                                 type="text"
                                 ref={userRef}
                                 onChange={(e) => setUser(e.target.value)}
-                                value={user}
+                                value={userName}
                                 required
                             />
 
@@ -85,8 +85,8 @@ const Login = () => {
                             <input
                                 id="password"
                                 type="password"
-                                onChange={(e) => setPwd(e.target.value)}
-                                value={pwd}
+                                onChange={(e) => setPassword(e.target.value)}
+                                value={password}
                                 required
                             />
                             <button>Sign In </button>
