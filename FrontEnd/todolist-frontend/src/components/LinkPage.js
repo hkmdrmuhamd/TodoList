@@ -11,6 +11,7 @@ const LinkPage = () => {
             <br />
             <h2>Private</h2>
             <Link to="/">Show</Link>
+            <Link to="/admin">Admin Page</Link>
         </section>
     )
 }

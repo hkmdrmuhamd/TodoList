@@ -43,7 +43,6 @@ const Register = () => {
 
         try {
             const response = await axios.post(REGISTER_URL, JSON.stringify({ userName, password }), {
-                // parantez içindeki user ve pwd back-end'den bu şekilde gelmeli !!! eğer user yerine username ve pwd yerine password şeklinde geliyor ise ; ({user:username , pwd: password}) olarak yazarız !!!!!
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             });
@@ -70,6 +69,9 @@ const Register = () => {
             {success
                 ?
                 <>
+                    <section>
+                        <h1>success</h1>
+                    </section>
                     {alert('Success bir şekilde kayıt oldunuz !')}
                 </>
 

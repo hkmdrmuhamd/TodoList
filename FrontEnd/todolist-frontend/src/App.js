@@ -1,10 +1,18 @@
 import './App.css';
 import Layout from './components/Layout';
-import LinkPage from './components/LinkPage';
 import Login from './components/Login';
 import Register from './components/Register';
+import LinkPage from './components/LinkPage';
+import Unauthorized from './components/Unauthorized';
 import Show from './components/Show';
+import Admin from './components/Admin';
 import { Routes, Route } from 'react-router-dom';
+import RequireAuth from './components/RequireAuth';
+
+const ROLES = {
+  'User': 'ROLE_CLIENT',
+  'Admin': 'ADMIN_CLIENT'
+}
 
 function App() {
   return (
@@ -14,11 +22,17 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
         <Route path='/linkpage' element={<LinkPage />} />
+        <Route path="unauthorized" element={<Unauthorized />} />
 
         {/* we want to protected this routes */}
-        <Route path='/' element={<Show />} />
+        <Route element={<RequireAuth allowedRoles={[ROLES.User, ROLES.Admin]} />}>
+          <Route path='/' element={<Show />} />
+        </Route>
+        <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
+          <Route path='/admin' element={<Admin />} />
+        </Route>
       </Route>
-    </Routes>
+    </Routes >
   );
 }
 
