@@ -21,7 +21,7 @@ const Login = () => {
 
     useEffect(() => {
         setErrMsg('');
-    }, [user, password])
+    }, [userName, password])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -76,7 +76,7 @@ const Login = () => {
                                 id="username"
                                 type="text"
                                 ref={userRef}
-                                onChange={(e) => setUser(e.target.value)}
+                                onChange={(e) => setUserName(e.target.value)}
                                 value={userName}
                                 required
                             />
