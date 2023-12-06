@@ -52,8 +52,6 @@ public class AuthControllers {
 
             AuthResponse authResponse = new AuthResponse();
             authResponse.setToken(jwtToken);
-            authResponse.setUserId(user.getId());
-            authResponse.setUserName(user.getUserName());
             authResponse.setRole(user.getRole());
 
             return ResponseEntity.ok(new SuccesDataResult<>("Login Success", authResponse));
