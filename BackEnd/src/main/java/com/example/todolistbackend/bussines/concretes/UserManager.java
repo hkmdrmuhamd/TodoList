@@ -2,7 +2,7 @@ package com.example.todolistbackend.bussines.concretes;
 
 
 import com.example.todolistbackend.bussines.abstractt.IUserService;
-import com.example.todolistbackend.entities.User;
+import com.example.todolistbackend.Entity.User;
 import com.example.todolistbackend.repository.UserRepository;
 import com.example.todolistbackend.utilities.*;
 import org.springframework.stereotype.Service;

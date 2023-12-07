@@ -1,6 +1,6 @@
 package com.example.todolistbackend.security;
 
-import com.example.todolistbackend.entities.User;
+import com.example.todolistbackend.Entity.User;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;

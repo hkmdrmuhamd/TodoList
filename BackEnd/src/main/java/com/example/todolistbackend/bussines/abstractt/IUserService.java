@@ -2,7 +2,7 @@ package com.example.todolistbackend.bussines.abstractt;
 
 
 
-import com.example.todolistbackend.entities.User;
+import com.example.todolistbackend.Entity.User;
 import com.example.todolistbackend.utilities.DataResult;
 import com.example.todolistbackend.utilities.Result;
 

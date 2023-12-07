@@ -1,4 +1,4 @@
-package com.example.todolistbackend.entities;
+package com.example.todolistbackend.Entity;
 
 
 import lombok.Builder;

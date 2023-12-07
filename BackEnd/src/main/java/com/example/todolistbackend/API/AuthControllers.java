@@ -5,7 +5,7 @@ import com.example.todolistbackend.DTOs.request.LoginRequest;
 import com.example.todolistbackend.DTOs.response.AuthResponse;
 import com.example.todolistbackend.DTOs.response.RegisterResponse;
 import com.example.todolistbackend.bussines.abstractt.IUserService;
-import com.example.todolistbackend.entities.User;
+import com.example.todolistbackend.Entity.User;
 import com.example.todolistbackend.security.JwtTokenProvider;
 import com.example.todolistbackend.utilities.ErrorDataResult;
 import com.example.todolistbackend.utilities.SuccesDataResult;
