@@ -1,12 +1,12 @@
-import { useRef, useState, useEffect } from "react";
+import {useRef, useState, useEffect} from "react";
 import useAuth from "../hooks/useAuth";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import {Link, useNavigate, useLocation} from "react-router-dom";
 import axios from "../api/axios";
 
 const LOGIN_URL = '/login';
 
 const Login = () => {
-    const { setAuth } = useAuth();
+    const {setAuth} = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || '/';
@@ -17,7 +17,6 @@ const Login = () => {
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
     const [errMsg, setErrMsg] = useState('');
-
 
     useEffect(() => {
         userRef.current.focus();
@@ -32,20 +31,25 @@ const Login = () => {
         try {
             const response = await axios.post(
                 LOGIN_URL,
-                JSON.stringify({ userName, password }),
+                JSON.stringify({userName, password}),
                 {
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {'Content-Type': 'application/json'},
                     withCredentials: true
                 }
-            );
-            // eğer back-end'den user değil de username ve pwd değil password geliyor ise; username:user, password:pwd şeklinde yazılır.
-            console.log(JSON.stringify(response?.data));
-            const accessToken = response?.data?.accessToken;
-            const roles = response?.data?.roles;
-            setAuth({ userName, password, roles, accessToken });
+            ).then((res) => {
+                return res.data.data;
+            });
+            const token = response.token;
+            const rol = JSON.stringify(response.role);
+            const arrRol = Array([rol]);
+            const type = typeof (arrRol);
+            console.log('type: ' + type);
+            console.log('rol : ' + arrRol);
+            console.log('token : ' + token);
+            setAuth({userName, password, arrRol, token});
             setUserName('');
             setPassword('');
-            navigate(from, { replace: true });
+            navigate(from, {replace: true});
         } catch (err) {
             if (!err?.response) {
                 setErrMsg('no server response');
@@ -53,8 +57,7 @@ const Login = () => {
                 setErrMsg('missing username or password');
             } else if (err.response?.status === 401) {
                 setErrMsg('unauthorized');
-            }
-            else {
+            } else {
                 setErrMsg('login failed')
             }
             errRef.current.focus();
@@ -65,9 +68,9 @@ const Login = () => {
         <section>
             <p ref={errRef} className={errMsg ? 'errmsg' : 'offscreen'} aria-live="assertive">
                 {errMsg}
-            </p >
+            </p>
             <h1>Sign In</h1>
-            <form onSubmit={handleSubmit} >
+            <form onSubmit={handleSubmit}>
                 <label htmlFor="username">Username: </label>
                 <input
                     id="username"
@@ -86,16 +89,16 @@ const Login = () => {
                     value={password}
                     required
                 />
-                <button>Sign In </button>
+                <button>Sign In</button>
             </form>
             <p>
-                Need an Account ? <br />
+                Need an Account ? <br/>
                 <span className="line">
                     {/* buraya register router konulacak */}
                     <Link to='/register'> Sign up </Link>
                 </span>
             </p>
-        </section >
+        </section>
     )
 }
 export default Login;
