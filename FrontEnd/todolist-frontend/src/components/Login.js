@@ -1,12 +1,12 @@
-import {useRef, useState, useEffect} from "react";
+import { useRef, useState, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
-import {Link, useNavigate, useLocation} from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "../api/axios";
 
 const LOGIN_URL = '/login';
 
 const Login = () => {
-    const {setAuth} = useAuth();
+    const { setAuth } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || '/';
@@ -31,25 +31,20 @@ const Login = () => {
         try {
             const response = await axios.post(
                 LOGIN_URL,
-                JSON.stringify({userName, password}),
+                JSON.stringify({ userName, password }),
                 {
-                    headers: {'Content-Type': 'application/json'},
+                    headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
                 }
-            ).then((res) => {
-                return res.data.data;
-            });
-            const token = response.token;
-            const rol = JSON.stringify(response.role);
-            const arrRol = Array([rol]);
-            const type = typeof (arrRol);
-            console.log('type: ' + type);
-            console.log('rol : ' + arrRol);
-            console.log('token : ' + token);
-            setAuth({userName, password, arrRol, token});
+            );
+            console.log(response.data);
+            const token = response.data.data.token;
+            const rol = response.data.data.role;
+
+            setAuth({ userName, password, rol, token });
             setUserName('');
             setPassword('');
-            navigate(from, {replace: true});
+            navigate(from, { replace: true });
         } catch (err) {
             if (!err?.response) {
                 setErrMsg('no server response');
@@ -92,7 +87,7 @@ const Login = () => {
                 <button>Sign In</button>
             </form>
             <p>
-                Need an Account ? <br/>
+                Need an Account ? <br />
                 <span className="line">
                     {/* buraya register router konulacak */}
                     <Link to='/register'> Sign up </Link>

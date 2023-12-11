@@ -11,7 +11,7 @@ import RequireAuth from './components/RequireAuth';
 
 const ROLES = {
   'User': 'ROLE_CLIENT',
-  'Admin': 'ADMIN_CLIENT'
+  'Admin': 'ROLE_ADMIN'
 }
 
 function App() {
