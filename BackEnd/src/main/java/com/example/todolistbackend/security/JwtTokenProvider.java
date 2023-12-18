@@ -22,8 +22,10 @@ public class JwtTokenProvider {
         Date expireDate = new Date(new Date().getTime() + EXPIRES_IN);
         return Jwts.builder().setSubject(Integer.toString(userDetails.getId()))
                 .claim("name", userDetails.getName())
+                .claim("role",userDetails.getRole())
                 .setIssuedAt(new Date()).setExpiration(expireDate)
                 .signWith(SignatureAlgorithm.HS512, APP_SECRET).compact();
+
     }
 
     public String generateJwtTokenByUserId(int userId) {
@@ -41,6 +43,11 @@ public class JwtTokenProvider {
     public String getUsernameFromJwt(String token) {
         Claims claims = Jwts.parser().setSigningKey(APP_SECRET).parseClaimsJws(token).getBody();
         return String.valueOf(claims.get("name"));
+    }
+
+    public String getRolFromJwt(String token){
+        Claims claims = Jwts.parser().setSigningKey(APP_SECRET).parseClaimsJws(token).getBody();
+        return String.valueOf(claims.get("role"));
     }
 
     boolean validateToken(String token) {

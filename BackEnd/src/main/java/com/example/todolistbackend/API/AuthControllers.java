@@ -53,6 +53,7 @@ public class AuthControllers {
             AuthResponse authResponse = new AuthResponse();
             authResponse.setToken(jwtToken);
             authResponse.setRole(user.getRole());
+            authResponse.setId(user.getId());
 
             return ResponseEntity.ok(new SuccesDataResult<>("Login Success", authResponse));
         } catch (AuthenticationException e) {
@@ -97,16 +98,20 @@ public class AuthControllers {
 
     @GetMapping("/current-user")
     public ResponseEntity<Map<String, Object>> getCurrentUser(@RequestHeader("Authorization") String token) {
-        String cleanToken = token.replace("Bearer ", "");
-        Map<String, Object> response = new HashMap<>();
+            String cleanToken = token.replace("Bearer ", "");
+            Map<String, Object> response = new HashMap<>();
 
-        Integer userId = jwtTokenProvider.getUserIdFromJwt(cleanToken);
-        String username = jwtTokenProvider.getUsernameFromJwt(cleanToken);
 
-        response.put("name", username);
-        response.put("id", userId);
+            System.out.println(token);
+            Integer userId = jwtTokenProvider.getUserIdFromJwt(cleanToken);
+            String username = jwtTokenProvider.getUsernameFromJwt(cleanToken);
 
-        return ResponseEntity.ok(response);
+            response.put("name", username);
+            response.put("id", userId);
+            response.put("role",jwtTokenProvider.getRolFromJwt(cleanToken));
+
+
+            return ResponseEntity.ok(response);
     }
 
 }
