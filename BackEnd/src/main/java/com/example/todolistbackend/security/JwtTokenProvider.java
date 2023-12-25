@@ -50,7 +50,7 @@ public class JwtTokenProvider {
         return String.valueOf(claims.get("role"));
     }
 
-    boolean validateToken(String token) {
+    public boolean validateToken(String token) {
         try {
             Jwts.parser().setSigningKey(APP_SECRET).parseClaimsJws(token);
             return !isTokenExpired(token);
@@ -67,9 +67,8 @@ public class JwtTokenProvider {
         }
     }
 
-    private boolean isTokenExpired(String token) {
+    public boolean isTokenExpired(String token) {
         Date expiration = Jwts.parser().setSigningKey(APP_SECRET).parseClaimsJws(token).getBody().getExpiration();
         return expiration.before(new Date());
     }
-
 }

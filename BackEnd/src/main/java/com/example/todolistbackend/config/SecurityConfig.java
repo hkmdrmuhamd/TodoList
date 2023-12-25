@@ -3,7 +3,6 @@ package com.example.todolistbackend.config;
 import com.example.todolistbackend.bussines.concretes.UserDetailsServiceImpl;
 import com.example.todolistbackend.security.JwtAuthenticationEntryPoint;
 import com.example.todolistbackend.security.JwtAuthenticationFilter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -78,13 +77,15 @@ public class SecurityConfig {
                 .exceptionHandling().authenticationEntryPoint(handler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/todos/**")
-                .permitAll()
-                .antMatchers(HttpMethod.POST, "/todos/**")
-                .permitAll()
-                .antMatchers(HttpMethod.GET, "/users/**")
-                .permitAll()
-                .antMatchers(HttpMethod.GET, "/categories/**")
+//                .antMatchers(HttpMethod.GET, "/todos/**")
+//                .permitAll()
+//                .antMatchers(HttpMethod.POST, "/todos/**")
+//                .permitAll()
+//                .antMatchers(HttpMethod.GET, "/users/**")
+//                .permitAll()
+//                .antMatchers(HttpMethod.GET, "/categories/**")
+//                .permitAll()
+                .antMatchers(HttpMethod.POST, "/acquisitions/**")
                 .permitAll()
                 .antMatchers("/auth/**")
                 .permitAll()

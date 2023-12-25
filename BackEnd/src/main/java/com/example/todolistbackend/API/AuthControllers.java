@@ -104,9 +104,9 @@ public class AuthControllers {
 
             System.out.println(token);
             Integer userId = jwtTokenProvider.getUserIdFromJwt(cleanToken);
-            String username = jwtTokenProvider.getUsernameFromJwt(cleanToken);
+            String userName = jwtTokenProvider.getUsernameFromJwt(cleanToken);
 
-            response.put("name", username);
+            response.put("name", userName);
             response.put("id", userId);
             response.put("role",jwtTokenProvider.getRolFromJwt(cleanToken));
 
