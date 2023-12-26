@@ -14,7 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -100,14 +102,59 @@ public class AcquisitionsController {
         }
     }
 
-    @PutMapping("/updateProduct")
-    public String updateProducts(){
-        return "Data updated";
+    @PutMapping("/updateProduct/{productId}")
+    public ResponseEntity<?> updateEmployee(@PathVariable("productId") int id, @RequestHeader("Authorization") String token, @RequestBody Product product) {
+
+        try {
+            String cleanToken = token.replace("Bearer ", "");
+            Integer userId = jwtTokenProvider.getUserIdFromJwt(cleanToken);
+            String userName = jwtTokenProvider.getUsernameFromJwt(cleanToken);
+
+            if (userRepository.findById(userId).isEmpty() || !userRepository.findById(userId).get().getUserName().equals(userName) ) {
+                ProductResponse errorResponse = new ProductResponse();
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDataResult<>("Unregistered user",errorResponse));
+            }
+
+            Product productData = productRepository.findById(id)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found for this id : " + id));
+
+            productData.setProductName(product.getProductName());
+            productData.setProductAmount(product.getProductAmount());
+            productData.setProductUnit(product.getProductUnit());
+            productData.setUpdateDate(LocalDateTime.now());
+            productData.setUpdatedBy(userName);
+
+            Product updatedProduct = productRepository.save(productData);
+            return ResponseEntity.status(HttpStatus.OK).body(updatedProduct);
+
+        } catch (Exception e) {
+            ProductResponse errorResponse = new ProductResponse();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorDataResult<>("Unauthorized user",errorResponse));
+        }
     }
 
-    @DeleteMapping("/deleteProduct")
-    public String deleteProduct(){
-        return "Data deleted";
+    @DeleteMapping("/deleteProduct/{productId}")
+    public ResponseEntity<?> deleteProduct(@PathVariable("productId") int id, @RequestHeader("Authorization") String token){
+        try {
+            String cleanToken = token.replace("Bearer ", "");
+            Integer userId = jwtTokenProvider.getUserIdFromJwt(cleanToken);
+            String userName = jwtTokenProvider.getUsernameFromJwt(cleanToken);
+
+            if (userRepository.findById(userId).isEmpty() || !userRepository.findById(userId).get().getUserName().equals(userName) ) {
+                ProductResponse errorResponse = new ProductResponse();
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDataResult<>("Unregistered user",errorResponse));
+            }
+
+            productRepository.findById(id)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found for this id : " + id));
+
+            productRepository.deleteById(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Product deleted successfully");
+
+        } catch (Exception e) {
+            ProductResponse errorResponse = new ProductResponse();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorDataResult<>("Unauthorized user",errorResponse));
+        }
     }
 
 }
